@@ -36,7 +36,7 @@ public class UserController {
             throw new UserNotFoundException("id " + id);
         }
         EntityModel<User> model = EntityModel.of(user);
-        // introspection to create a link to the method findAll() inside this class
+        // CREATE a link to the method findAll() inside this class using HATEOAS
         WebMvcLinkBuilder lintToUser = linkTo(methodOn(this.getClass()).findAll());
         model.add(lintToUser.withRel("all-users"));
         return model;
@@ -47,6 +47,7 @@ public class UserController {
     public ResponseEntity<Object> addUser(@Valid @RequestBody User user){
         User savedUser = userPersistence.addUser(user);
 
+        // CREATES a link to the new User in the response
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
